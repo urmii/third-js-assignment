@@ -1,46 +1,47 @@
+const NUMBER_OF_ROUNDS = 5; 
+const PLAYER = 'PLAYER';
+const COMPUTER = 'COMPUTER';
+const gameChoices = ["Rock", "Paper", "Scissors"];
+
 // Function to get a random choice from computer
 function computerPlay() {
-  const choices = ['Rock', 'Paper', 'Scissors'];
-  const randomIndex = Math.floor(Math.random() * choices.length);
-  return choices[randomIndex];
+  const randomIndex = Math.floor(Math.random() * gameChoices.length);
+  return gameChoices[randomIndex];
 }
 
 // Function to play a single round of Rock Paper Scissors
 function playRound(playerSelection, computerSelection) {
-  playerSelection = playerSelection.toLowerCase();
-  computerSelection = computerSelection.toLowerCase();
+  const player = playerSelection.toLowerCase();
+  const computer = computerSelection.toLowerCase();
+
+  if (player === computer) return "It's a tie! You both chose " + playerSelection;
 
   if (
-    (playerSelection === 'rock' && computerSelection === 'scissors') ||
-    (playerSelection === 'paper' && computerSelection === 'rock') ||
-    (playerSelection === 'scissors' && computerSelection === 'paper')
+    (player === gameChoices[0] && computer === gameChoices[2]) ||
+    (player === gameChoices[1] && computer === gameChoices[0]) ||
+    (player === gameChoices[2] && computer === gameChoices[1])
   ) {
-    return 'You Win! ' + playerSelection + ' beats ' + computerSelection;
-  } else if (
-    (playerSelection === 'rock' && computerSelection === 'paper') ||
-    (playerSelection === 'paper' && computerSelection === 'scissors') ||
-    (playerSelection === 'scissors' && computerSelection === 'rock')
-  ) {
-    return 'You Lose! ' + computerSelection + ' beats ' + playerSelection;
+    return `You Win! ${playerSelection} beats ${computerSelection}`;
   } else {
-    return "It's a tie! You both chose " + playerSelection;
+    return `You Lose! ${computerSelection} beats ${playerSelection}`;
   }
 }
 
 // Function to play the game for 5 rounds
 function game() {
-  let playerScore = 0;
-  let computerScore = 0;
+  const gameInfo = {
+    playerScore: 0,
+    computerScore: 0,
+  };
 
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < NUMBER_OF_ROUNDS; i++) {
+    const roundNumber = i + 1;
+
     let playerSelection = prompt(
-      'Round ' +
-        (i + 1) +
-        '! Choose Rock, Paper, or Scissors:'
+      `Round ${roundNumber}! Choose Rock, Paper, or Scissors:`
     );
 
     if (playerSelection === null) {
-      // If the user clicks "Cancel," ask for confirmation to quit the game
       const quitConfirm = confirm(
         'Are you sure you want to quit the game? Click "OK" to quit or "Cancel" to continue.'
       );
@@ -48,7 +49,6 @@ function game() {
         console.log('Game aborted by the user.');
         return;
       } else {
-        // If user cancels quit, repeat the current round
         i--;
         continue;
       }
@@ -56,31 +56,38 @@ function game() {
 
     // Check for valid input (Rock, Paper, or Scissors) and repeat the round for invalid input
     if (
-      playerSelection.toLowerCase() !== 'rock' &&
-      playerSelection.toLowerCase() !== 'paper' &&
-      playerSelection.toLowerCase() !== 'scissors'
+      playerSelection.toLowerCase() !== gameChoices[0] &&
+      playerSelection.toLowerCase() !== gameChoices[1] &&
+      playerSelection.toLowerCase() !== gameChoices[2]
     ) {
       console.log('Invalid input! Please choose Rock, Paper, or Scissors.');
+      alert('Invalid input! Please choose Rock, Paper, or Scissors.');
       i--;
       continue;
     }
 
     const computerSelection = computerPlay();
-    const result = playRound(playerSelection, computerSelection);
+    const result = playRound(playerSelection, computerSelection); 
     alert(result);
     console.log(result);
-
-    if (result.includes('Win')) {
-      playerScore++;
-    } else if (result.includes('Lose')) {
-      computerScore++;
-    }
+    updateGameResult(result, gameInfo);
   }
+  getGameMessage(gameInfo);
+}
 
-  if (playerScore > computerScore) {
+function updateGameResult(winner,game) {
+  if (winner === COMPUTER) {
+    game["computerScore"] = game["computerScore"] + 1;
+  } else {
+    game["playerScore"] = game["playerScore"] + 1;
+  }
+}
+
+function getGameMessage(game) {
+  if (game.playerScore > game.computerScore) {
     console.log('Congratulations! You win the game!');
     alert('Congratulations! You win the game!');
-  } else if (playerScore < computerScore) {
+  } else if (game.playerScore < game.computerScore) {
     console.log('Sorry, you lose the game. Better luck next time!');
     alert('Sorry, you lose the game. Better luck next time!');
   } else {
