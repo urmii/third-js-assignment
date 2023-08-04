@@ -1,7 +1,7 @@
 const NUMBER_OF_ROUNDS = 5;
 const PLAYER = 'PLAYER';
 const COMPUTER = 'COMPUTER';
-const gameChoices = ["Rock", "Paper", "Scissors"];
+const gameChoices = ["rock", "paper", "scissors"];
 
 function computerPlay() {
   const randomIndex = Math.floor(Math.random() * gameChoices.length);
@@ -85,7 +85,7 @@ function game() {
     }
 
     const computerSelection = computerPlay();
-    const result = playRound(playerSelection, computerSelection);
+    const result = playRound(playerSelection, computerSelection); 
     alert(result);
     console.log(result);
     updateGameResult(result, gameInfo);
