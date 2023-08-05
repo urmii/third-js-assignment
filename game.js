@@ -4,6 +4,34 @@ const COMPUTER = "COMPUTER";
 const CANCEL_GAME = "CANCEL_GAME";
 const gameChoices = ["rock", "paper", "scissors"];
 
+function game() {
+  const gameInfo = {
+    playerScore: 0,
+    computerScore: 0,
+  };
+
+  for (let i = 1; i <= NUMBER_OF_ROUNDS; i++) {
+    const roundNumber = i;
+
+    const playerSelection = userPlay();
+    if (playerSelection === CANCEL_GAME) {
+      alert("Sad that you are leaving, REFRESH the page to play again");
+      return;
+    }
+    const computerSelection = computerPlay();
+    const result = playRound(playerSelection, computerSelection);
+    console.log("Round: ", roundNumber);
+    console.log(result);
+    updateGameResult(result, game);
+  }
+  getGameMessage(gameInfo);
+  alert("REFRESH the page to play again");
+}
+
+game();
+
+/************************************************************ */
+
 function computerPlay() {
   const randomIndex = Math.floor(Math.random() * gameChoices.length);
   return gameChoices[randomIndex];
@@ -73,28 +101,3 @@ function isCancelGame(playerSelection) {
 function isValidChoice(playerSelection) {
   return playerSelection && gameChoices.includes(playerSelection.toLowerCase());
 }
-function game() {
-  const gameInfo = {
-    playerScore: 0,
-    computerScore: 0,
-  };
-
-  for (let i = 1; i <= NUMBER_OF_ROUNDS; i++) {
-    const roundNumber = i;
-
-    const playerSelection = userPlay();
-    if (playerSelection === CANCEL_GAME) {
-      alert("Sad that you are leaving, REFRESH the page to play again");
-      return;
-    }
-    const computerSelection = computerPlay();
-    const result = playRound(playerSelection, computerSelection);
-    console.log("Round: ", roundNumber);
-    console.log(result);
-    updateGameResult(result, gameInfo);
-  }
-  getGameMessage(gameInfo);
-  alert("REFRESH the page to play again");
-}
-
-game();
