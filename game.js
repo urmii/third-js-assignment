@@ -93,9 +93,7 @@ function isCancelGame(playerSelection) {
   if (quitConfirm) {
     alert("Game aborted by the user.");
     return true;
-  }
-
-  return false;
+  } else return false;
 }
 
 function isValidChoice(playerSelection) {
