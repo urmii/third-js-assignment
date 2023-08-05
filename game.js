@@ -21,9 +21,8 @@ function game() {
     }
     const computerSelection = computerPlay();
     const result = playRound(playerSelection, computerSelection);
-    console.log("Round: ", roundNumber);
-    console.log(result);
-    updateGameResult(result, game);
+    updateGameResult(result, gameInfo);
+    showRoundMessage(result, playerSelection, computerSelection, roundNumber);
   }
   getGameMessage(gameInfo);
   alert("REFRESH the page to play again");
@@ -38,24 +37,48 @@ function computerPlay() {
 }
 
 function playRound(playerSelection, computerSelection) {
-  const player = playerSelection.toLowerCase();
-  const computer = computerSelection.toLowerCase();
-
-  if (player === computer)
-    return `It's a tie! You both chose ${playerSelection}`;
+  if (playerSelection === computerSelection) return;
 
   if (
-    (player === gameChoices[0] && computer === gameChoices[2]) ||
-    (player === gameChoices[1] && computer === gameChoices[0]) ||
-    (player === gameChoices[2] && computer === gameChoices[1])
+    (playerSelection === gameChoices[0] &&
+      computerSelection === gameChoices[2]) ||
+    (playerSelection === gameChoices[1] &&
+      computerSelection === gameChoices[0]) ||
+    (playerSelection === gameChoices[2] && computerSelection === gameChoices[1])
   )
-    return `You Win! ${playerSelection} beats ${computerSelection}`;
+    return PLAYER;
 
-  return `You Lose! ${computerSelection} beats ${playerSelection}`;
+  return COMPUTER;
+}
+
+function showRoundMessage(
+  winner,
+  playerSelection,
+  computerSelection,
+  roundNumber
+) {
+  console.log("Round: ", roundNumber);
+
+  const player = playerSelection.toUpperCase();
+  const computer = computerSelection.toUpperCase();
+  if (!winner) {
+    console.log(
+      `Its A Tie!: Your selection is ${player} & computer selection is ${computer}`
+    );
+  } else if (winner === COMPUTER) {
+    console.log(
+      `You Lose!: computer selection is ${computer} and it BEATS your selection ${player}`
+    );
+  } else {
+    console.log(
+      `You Win!: Your selection is ${player} and it BEATS computer selection ${computer}`
+    );
+  }
 }
 
 function getGameMessage(game) {
   console.log("***********************************************************");
+  console.log(`Computer-Player: ${game.computerScore} - ${game.playerScore}`);
   if (game.playerScore > game.computerScore) {
     console.log("Congratulations! You win the game!");
   } else if (game.playerScore < game.computerScore) {
@@ -66,6 +89,8 @@ function getGameMessage(game) {
 }
 
 function updateGameResult(winner, game) {
+  if (!winner) return;
+
   if (winner === COMPUTER) {
     game["computerScore"] = game["computerScore"] + 1;
   } else {
@@ -80,7 +105,6 @@ function userPlay() {
     playerSelection = prompt("Please Choose Rock, Paper or Scissors:");
     if (isCancelGame(playerSelection)) return CANCEL_GAME;
   } while (!isValidChoice(playerSelection));
-
   return playerSelection;
 }
 
@@ -97,5 +121,8 @@ function isCancelGame(playerSelection) {
 }
 
 function isValidChoice(playerSelection) {
-  return playerSelection && gameChoices.includes(playerSelection.toLowerCase());
+  return (
+    playerSelection &&
+    gameChoices.includes(playerSelection.toLowerCase().trim())
+  );
 }
