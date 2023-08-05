@@ -4,6 +4,7 @@ const COMPUTER = "COMPUTER";
 const CANCEL_GAME = "CANCEL_GAME";
 const gameChoices = ["rock", "paper", "scissors"];
 
+/*********************** MAIN ******************************* */
 function game() {
   const gameInfo = {
     playerScore: 0,
@@ -30,7 +31,7 @@ function game() {
 
 game();
 
-/************************************************************ */
+/********************** END OF MAIN ************************************** */
 
 function computerPlay() {
   const randomIndex = Math.floor(Math.random() * gameChoices.length);
