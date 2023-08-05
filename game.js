@@ -79,7 +79,7 @@ function game() {
     computerScore: 0,
   };
 
-  for (let i = 1; i <= 5; i++) {
+  for (let i = 1; i <= NUMBER_OF_ROUNDS; i++) {
     const roundNumber = i;
 
     const playerSelection = userPlay();
