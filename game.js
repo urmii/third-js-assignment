@@ -30,7 +30,6 @@ function game() {
 }
 
 game();
-
 /********************** END OF MAIN ************************************** */
 
 function computerPlay() {
